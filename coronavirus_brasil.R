@@ -3,23 +3,19 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 
-y <- load_nCov2019(lang = 'en', source='github')
+y <- load_nCov2019(lang = 'en', source = 'github')
 corona <- y['global']
 
 
+countries <- c("Brazil", "Italy", "Iran", "China",  "United States", "Spain", "Japan", "Germany")
 br <- corona %>%
-  filter(country == "Brazil" | country == "Italy" | country == "Iran" | country == "China" | country == "United States"
-         | country == "Spain" | country == "Japan" | country == "France")
+  filter(country %in% countries)
+
+head(br)
   
-
-t <- corona %>% 
-  distinct(country, .keep_all = TRUE) %>% 
-  arrange(desc(time))
-t
-
-
-br_plot <- ggplot(br, aes(x = time, y = log(cum_confirm), col = country)) +
+br_plot <- ggplot(br, aes(x = time, y = cum_confirm, col = country)) +
   geom_point() +
-  geom_line() 
+  geom_line() +
+  scale_y_log10()
 
 br_plot
