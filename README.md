@@ -1,2 +1,2 @@
 # covid-19
-Ecploratory Data Analysis
+Exploratory Data Analysis
