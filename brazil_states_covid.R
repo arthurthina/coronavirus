@@ -7,7 +7,8 @@ library(readr)
 #Fonte: Secretarias de Saúde das Unidades Federativas, dados tratados por Álvaro Justen e colaboradores/Brasil.IO
 brazil_covid <- read_csv("covid19.csv")
 
-# Update a value
+# Checking and Updating a value
+brazil_covid[brazil_covid$confirmed == 358,]
 brazil_covid$confirmed[brazil_covid$confirmed == 306] <- 358
 
 
@@ -17,7 +18,7 @@ brazil_top <- brazil_covid %>%
   arrange(desc(confirmed)) %>% 
   distinct(city, .keep_all = TRUE) 
 
-head(brazil_top, 6)
+head(brazil_top, 19)
 
 
 # Preparing dataframe
