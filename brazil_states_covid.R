@@ -4,13 +4,12 @@ library(tidyr)
 library(RColorBrewer)
 library(readr)
 
-#Fonte: Secretarias de Saúde das Unidades Federativas, dados tratados por Álvaro Justen e colaboradores/Brasil.IO
+# Source: Secretarias de Saúde das Unidades Federativas, dados tratados por Álvaro Justen e colaboradores/Brasil.IO
 brazil_covid <- read_csv("covid19.csv")
 
-# Checking and Updating a value
-brazil_covid[brazil_covid$confirmed == 358,]
-brazil_covid$confirmed[brazil_covid$confirmed == 306] <- 358
-
+# Fixing São Paulo input(confirmed) on 2020-03-20
+brazil_covid[brazil_covid$confirmed == 306,]
+brazil_covid$confirmed[brazil_covid$confirmed == 306 & brazil_covid$city == "São Paulo"] <- 358
 
 # Checking top 5 most affected cities
 brazil_top <- brazil_covid %>% 
@@ -18,11 +17,10 @@ brazil_top <- brazil_covid %>%
   arrange(desc(confirmed)) %>% 
   distinct(city, .keep_all = TRUE) 
 
-head(brazil_top, 19)
-
+head(brazil_top, 9)
 
 # Preparing dataframe
-city_filtered <- c("São Paulo", "Rio de Janeiro", "Fortaleza", "Manaus", "Brasília")
+city_filtered <- c("São Paulo", "Rio de Janeiro", "Fortaleza", "Manaus", "Recife")
 brazil_cities <- brazil_covid %>% 
   group_by(state) %>% 
   select(-city_ibge_code, -place_type) %>% 
@@ -30,7 +28,7 @@ brazil_cities <- brazil_covid %>%
   filter(city %in% city_filtered) %>% 
   mutate(diff_confirm = confirmed - lag(confirmed, default = first(confirmed)))
 
-View(brazil_cities)
+head(brazil_cities)
 
 # Choosing colorblind-friendly palette
 cbp1 <- c("#999999", "#E69F00", "#56B4E9", "#009E73",
@@ -42,28 +40,45 @@ ggplot(brazil_cities, aes(x = date, y = confirmed, col = city)) +
   geom_line() +
   theme_grey() +
   scale_x_date(name = "Time", date_breaks = "2 day", date_labels = "%d/%b") +
-  scale_y_continuous(name = "New Confirmed Cases", breaks = seq(0, 8000, 500)) +
+  scale_y_continuous(name = "Confirmed Cases", breaks = seq(0, 10000, 500)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
   scale_colour_manual(values = cbp1) +
   theme(legend.justification = "right", legend.position = c(0.2, 0.78)) +
   labs(title = "Brazil COVID19 Cases",
        subtitle = "Top 5 most affected cities",
-       color = "Cities",
+       col = "Cities",
        caption = "Fonte: Secretarias de Saúde das Unidades Federativas, 
        dados tratados por Álvaro Justen e colaboradores/Brasil.IO") 
 
-# Plotting daily new cases confirmed
-ggplot(brazil_cities, aes(x = date, y = diff_confirm, col = city)) +
- geom_point() +
-  geom_line() +
+# Plotting new daily cases
+ggplot(brazil_cities, aes(x = date, y = diff_confirm, fill = city)) +
+  geom_col() +
   theme_grey() +
   scale_x_date(name = "Time", date_breaks = "2 day", date_labels = "%d/%b") +
-  scale_y_continuous(name = "New Confirmed Daily Cases", breaks = seq(0, 700, 50)) +
+  scale_y_continuous(name = "New Confirmed Daily Cases", breaks = seq(0, 3000, 100)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  scale_colour_manual(values = cbp1) +
+  scale_fill_manual(values = cbp1) +
   theme(legend.justification = "right", legend.position = c(0.2, 0.78)) +
   labs(title = "Brazil COVID19 Cases",
        subtitle = "Top 5 most affected cities - New Daily Cases Confirmed",
-       color = "Cities",
+       fill = "Cities",
        caption = "Fonte: Secretarias de Saúde das Unidades Federativas, 
        dados tratados por Álvaro Justen e colaboradores/Brasil.IO")
+
+# Preparing dataframe for boxplot - Last 30 days kept and SP removed
+box_br_cities <- brazil_cities %>% 
+  filter(date > "2020-03-18" & city != "São Paulo") 
+head(box_br_cities)
+
+ggplot(box_br_cities, aes(x = city, y = diff_confirm, fill = city)) + 
+  geom_boxplot() +
+  scale_y_continuous(breaks = seq(0, 900, 25)) +
+  scale_fill_brewer(palette = "BuPu") +
+  labs(title = "Brazil COVID19 Cases",
+       x = "Cities",
+       y = "New Daily Cases",
+       fill = "Cities",
+       caption = "Fonte: Secretarias de Saúde das Unidades Federativas, 
+       dados tratados por Álvaro Justen e colaboradores/Brasil.IO") 
+       
+       
