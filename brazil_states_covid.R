@@ -5,7 +5,7 @@ library(RColorBrewer)
 library(readr)
 
 # Source: Secretarias de Saúde das Unidades Federativas, dados tratados por Álvaro Justen e colaboradores/Brasil.IO
-brazil_covid <- read_csv("covid19.csv")
+brazil_covid <- read_csv("https://brasil.io/dataset/covid19/caso?format=csv")
 
 # Fixing São Paulo input(confirmed) on 2020-03-20
 brazil_covid[brazil_covid$confirmed == 306,]
