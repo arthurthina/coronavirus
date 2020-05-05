@@ -10,6 +10,10 @@ brazil_covid <- read_csv("https://brasil.io/dataset/covid19/caso?format=csv")
 # Fixing São Paulo input(confirmed) on 2020-03-20
 brazil_covid[brazil_covid$confirmed == 306,]
 brazil_covid$confirmed[brazil_covid$confirmed == 306 & brazil_covid$city == "São Paulo"] <- 358
+brazil_covid[brazil_covid$confirmed == 1647,]
+brazil_covid$confirmed[brazil_covid$confirmed == 1647 & brazil_covid$city == "Recife"] <- 2282
+brazil_covid[brazil_covid$confirmed == 1776,]
+brazil_covid$confirmed[brazil_covid$confirmed == 1776 & brazil_covid$city == "Recife"] <- 2502
 
 # Checking top 5 most affected cities
 brazil_top <- brazil_covid %>% 
@@ -40,14 +44,14 @@ ggplot(brazil_cities, aes(x = date, y = confirmed, col = city)) +
   geom_line() +
   theme_grey() +
   scale_x_date(name = "Time", date_breaks = "2 day", date_labels = "%d/%b") +
-  scale_y_continuous(name = "Confirmed Cases", breaks = seq(0, 10000, 500)) +
+  scale_y_continuous(name = "Confirmed Cases", breaks = seq(0, 45000, 500)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
   scale_colour_manual(values = cbp1) +
   theme(legend.justification = "right", legend.position = c(0.2, 0.78)) +
   labs(title = "Brazil COVID19 Cases",
        subtitle = "Top 5 most affected cities",
        col = "Cities",
-       caption = "Fonte: Secretarias de Saúde das Unidades Federativas, 
+       caption = "Source: Secretarias de Saúde das Unidades Federativas, 
        dados tratados por Álvaro Justen e colaboradores/Brasil.IO") 
 
 # Plotting new daily cases
@@ -55,14 +59,14 @@ ggplot(brazil_cities, aes(x = date, y = diff_confirm, fill = city)) +
   geom_col() +
   theme_grey() +
   scale_x_date(name = "Time", date_breaks = "2 day", date_labels = "%d/%b") +
-  scale_y_continuous(name = "New Confirmed Daily Cases", breaks = seq(0, 3000, 100)) +
+  scale_y_continuous(name = "New Daily Cases", breaks = seq(0, 3000, 100)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
   scale_fill_manual(values = cbp1) +
   theme(legend.justification = "right", legend.position = c(0.2, 0.78)) +
   labs(title = "Brazil COVID19 Cases",
        subtitle = "Top 5 most affected cities - New Daily Cases Confirmed",
        fill = "Cities",
-       caption = "Fonte: Secretarias de Saúde das Unidades Federativas, 
+       caption = "Source: Secretarias de Saúde das Unidades Federativas, 
        dados tratados por Álvaro Justen e colaboradores/Brasil.IO")
 
 # Preparing dataframe for boxplot - Last 30 days kept and SP removed
@@ -78,7 +82,7 @@ ggplot(box_br_cities, aes(x = city, y = diff_confirm, fill = city)) +
        x = "Cities",
        y = "New Daily Cases",
        fill = "Cities",
-       caption = "Fonte: Secretarias de Saúde das Unidades Federativas, 
+       caption = "Source: Secretarias de Saúde das Unidades Federativas, 
        dados tratados por Álvaro Justen e colaboradores/Brasil.IO") 
        
        
