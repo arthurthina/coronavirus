@@ -45,5 +45,6 @@ df_sp_month <- df_sp %>%
   group_by(month = floor_date(date, unit = "month"))
 
 ggplot(df_sp_month, aes(x = date, y = deaths_covid19, color = age_group)) + 
-  geom_col() + 
+  geom_bar(position = "stack",
+           stat = "identity") +
   scale_x_date(date_labels = "%b %y", breaks = "month")
