@@ -27,17 +27,16 @@ summary(df_sp)
 df_sp <- states %>% 
   filter(state == "SP" & date >= "2020-03-10")
 
-tail(df_sp$date)
-unique(df_sp$age_group)
 
 ggthemr::ggthemr('earth', type = 'outer')
 ggplot(df_sp, aes(x = date, y = deaths_covid19, color = age_group)) +
-  geom_point() +
-  geom_jitter() +
+  geom_point(alpha = 0.8, size = 0.5) +
   scale_x_date(date_labels = "%m-%Y", date_breaks = "1 month") +
+  scale_y_continuous(breaks = seq(0, 150, 25)) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(x = "Date",
-       y = "Deaths") +
+       y = "Deaths",
+       color = "Age Group") +
  facet_wrap(~ age_group)
 
 
