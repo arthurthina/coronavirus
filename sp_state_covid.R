@@ -14,6 +14,7 @@ states <- read_xlsx("data_covid_state/states.xlsx",
                                    "text")) %>% 
   hablar::retype()
 
+
 states[is.na(states)] <- 0
 states$age_group <- factor(states$age_group, levels = c("9-", "10-19", "20-29", "30-39", "40-49", "50-59", 
                                                            "60-69", "70-79", "80-89", "90-99", "100+", "NA"  ))
@@ -39,6 +40,11 @@ ggplot(df_sp, aes(x = date, y = deaths_covid19, color = age_group)) +
        color = "Age Group") +
  facet_wrap(~ age_group)
 
+
+df_sp %>% 
+  janitor::tabyl(place) %>% 
+  ggplot(aes(x = place, y = n)) +
+  geom_col()
 
 df_sp_month <- df_sp %>% 
   group_by(month = floor_date(date, unit = "month"))
