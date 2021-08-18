@@ -4,7 +4,7 @@ library(RColorBrewer)
 library(ggthemr)
 library(lubridate)
 
-states <- read_xlsx("data_covid_state/states.xlsx", 
+states <- read_xlsx("data_covid_state/states_august.xlsx", 
                      col_types = c("text", "text", "numeric", 
                                    "text", "text", "text", "numeric", 
                                    "numeric", "numeric", "numeric", 
@@ -23,7 +23,7 @@ levels(states$age_group)
 
 states %>% 
   filter(state == "SP" & age_group == "9-")
-summary(df_sp)
+
 
 df_sp <- states %>% 
   filter(state == "SP" & date >= "2020-03-10")
