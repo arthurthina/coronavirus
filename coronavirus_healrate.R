@@ -1,8 +1,8 @@
-remotes::install_github("GuangchuangYu/nCov2019")
+#remotes::install_github("GuangchuangYu/nCov2019")
 library(nCov2019)
 library(dplyr)
 library(ggplot2)
-corona <- get_nCov2019(lang='en')
+corona <- get_nCov2019(lang ='en')
 
 plot(corona)
 
