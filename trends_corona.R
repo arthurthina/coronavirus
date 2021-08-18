@@ -17,4 +17,4 @@ br_trend <- gtrend %>%
 ggplot(br_trend, aes(x = date, y = log(coronavirus))) +
   geom_point() +
   geom_line() +
-  geom_line(data = br_corona, aes(x = time, y = log(cum_confirm)), color = "red")
+  geom_line(data = br_corona, aes(x = time, y = log(cum_confirm)), coloperfor = "red")
