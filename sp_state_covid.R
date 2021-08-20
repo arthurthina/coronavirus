@@ -4,7 +4,7 @@ library(RColorBrewer)
 library(ggthemr)
 library(lubridate)
 
-# Mudar o XLS
+# Mudar o XLS de CSV
 
 states <- read_xlsx("data_covid_state/states_august.xlsx", 
                      col_types = c("text", "text", "numeric", 
