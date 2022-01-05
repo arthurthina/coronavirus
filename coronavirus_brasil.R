@@ -7,7 +7,7 @@ library(RColorBrewer)
 y <- load_nCov2019(lang = 'en', source = 'github')
 corona <- y['global']
 
-
+# Filter countries
 countries <- c("Brazil", "Italy", "Iran", "China",  "United States", "Spain", "Japan", "Germany")
 br <- corona %>%
   filter(country %in% countries)
